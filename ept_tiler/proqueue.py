@@ -5,8 +5,8 @@ import json
 
 import multiprocessing
 import subprocess
-
-
+import string
+from pathlib import Path
 import logging
 logger = logging.getLogger('ept_tiler')
 
@@ -42,6 +42,34 @@ class SQS(Process):
         for tile in self.tasks:
             response = self.sqs.send_message(MessageBody = tile.pipeline)
             self.jobs.append(response)
+
+def random_filename(path):
+    import random
+    import string
+    from pathlib import Path
+    letters = string.ascii_lowercase
+    name = Path(path, ''.join(random.choice(letters) for i in range(10))).with_suffix('.json')
+    return name
+
+
+class Cache(Process):
+
+    def __init__(self, path):
+        super(Cache, self).__init__()
+        self.path = path
+
+    def do(self):
+        cn = Path(self.path) / Path('commands')
+        cn = cn.with_suffix('.txt')
+        commands = open(cn, 'wb')
+
+        for tile in self.tasks:
+            fn = random_filename(self.path)
+            with open(fn, 'wb') as o:
+                o.write(tile.pipeline.encode('utf-8'))
+
+            command = 'pdal pipeline %s\n' % fn.name
+            commands.write(command.encode('utf-8'))
 
 
 

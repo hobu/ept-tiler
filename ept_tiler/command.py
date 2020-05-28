@@ -30,7 +30,7 @@ def main():
     parser.add_argument("url", type=str, help="EPT Endpoint URL")
     parser.add_argument("-p", "--pipeline", type=str, help="Pipeline filename to execute")
     parser.add_argument("-s", "--stdin", action="store_true", help="Read PDAL pipeline from STDIN")
-    parser.add_argument("--target-type", choices=['sqs','local'], default='local', help="Where to run the jobs")
+    parser.add_argument("--target-type", choices=['sqs','local', 'cache'], default='cache', help="Where to run the jobs")
     parser.add_argument("-t", "--target", type=str, help="Queue to place jobs")
     parser.add_argument("-g", "--tags", type=str, help="Filename to use for 'user_data'")
     parser.add_argument("-o", "--output", type=str , default='something', help="Output filename")

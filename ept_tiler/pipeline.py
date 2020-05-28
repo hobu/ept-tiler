@@ -5,7 +5,7 @@ import io
 import json
 from .tile import tile
 from .layer import Layer
-from .proqueue import Local, SQS
+from .proqueue import Local, SQS, Cache
 
 
 import logging
@@ -66,8 +66,10 @@ def pipeline(args):
     queue = None
     if args.target_type == 'local':
         queue = Local(args.target)
-    else:
+    elif args.target_type == 'sqs':
         queue = SQS(args.target)
+    else:
+        queue = Cache(args.path)
 
 
 
@@ -88,7 +90,6 @@ def pipeline(args):
         count += 1
 
     queue.do()
-    import pdb;pdb.set_trace()
 
 
 

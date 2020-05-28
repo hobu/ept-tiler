@@ -44,6 +44,8 @@ def tile(args):
             t = [x0, y0, 0.0, x1, y1, 0.0]
 
             d = copy.copy(args.__dict__)
+            d['minx-buffer'] = x0-buffer; d['miny-buffer'] = y0-buffer; d['minz-buffer'] = 0.0
+            d['maxx+buffer'] = x1+buffer; d['maxy+buffer'] = y1+buffer; d['maxz+buffer'] = 0.0
             d['minx'] = x0; d['miny'] = y0; d['minz'] = 0.0
             d['maxx'] = x1; d['maxy'] = y1; d['maxz'] = 0.0
             d['filename'] = os.path.join(args.path, args.output) + '-%d-%d' % (xi, yi)
